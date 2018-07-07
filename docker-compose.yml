@@ -1,0 +1,52 @@
+version: '3.5'
+services:
+  server:
+    build: ../tw-server
+    command: sh -c './wait-for-file src/generated/prisma.graphql -- yarn start'
+    ports:
+      - '4332:4332'
+    depends_on:
+      - data
+    environment:
+      PRISMA_MANAGEMENT_API_SECRET: ${PRISMA_MANAGEMENT_API_SECRET:-dev-management-secret}
+    volumes:
+      - graphql-types:/app/src/generated
+  data:
+    build: ../tw-data
+    command: sh -c './wait-for -t 180 prisma:4466 -- yarn start'
+    depends_on:
+      - prisma
+    environment:
+      PRISMA_MANAGEMENT_API_SECRET: ${PRISMA_MANAGEMENT_API_SECRET:-dev-management-secret}
+    volumes:
+      - graphql-types:/app/generated
+  prisma:
+    image: prismagraphql/prisma:1.10
+    restart: always
+    ports:
+      - "4466:4466"
+    depends_on:
+      - postgres
+    environment:
+      PRISMA_CONFIG: |
+        port: 4466
+        managementApiSecret: ${PRISMA_MANAGEMENT_API_SECRET:-dev-management-secret}
+        databases:
+          default:
+            connector: postgres
+            host: postgres
+            port: 5432
+            user: prisma
+            password: prisma
+            migrations: true
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: prisma
+      POSTGRES_PASSWORD: prisma
+    volumes:
+      - postgres:/var/lib/postgresql/data
+volumes:
+  postgres:
+  graphql-types:
