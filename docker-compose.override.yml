@@ -3,10 +3,9 @@ services:
   server:
     volumes:
       - ../tw-server:/app
-      - graphql-types:/app/src/generated
       - /app/node_modules
   data:
     volumes:
       - ../tw-data:/app
-      - graphql-types:/app/generated
+      - ../tw-server/src/generated:/app/generated
       - /app/node_modules

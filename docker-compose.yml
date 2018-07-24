@@ -1,16 +1,15 @@
 version: '3.5'
 services:
   server:
+    image: tw-server:${SERVER_IMAGE_TAG:-dev}
     build: ../tw-server
-    command: sh -c './wait-for-file src/generated/prisma.ts -- yarn run start:dev'
+    command: sh -c './wait-for-file src/generated/prisma.ts -- yarn run start'
     ports:
       - '4332:4332'
     depends_on:
       - data
     environment:
       PRISMA_MANAGEMENT_API_SECRET: ${PRISMA_MANAGEMENT_API_SECRET:-dev-management-secret}
-    volumes:
-      - graphql-types:/app/src/generated
   data:
     build: ../tw-data
     command: sh -c './wait-for -t 180 prisma:4466 -- yarn start'
@@ -18,8 +17,6 @@ services:
       - prisma
     environment:
       PRISMA_MANAGEMENT_API_SECRET: ${PRISMA_MANAGEMENT_API_SECRET:-dev-management-secret}
-    volumes:
-      - graphql-types:/app/generated
   prisma:
     image: prismagraphql/prisma:1.10
     restart: always
@@ -49,4 +46,3 @@ services:
       - postgres:/var/lib/postgresql/data
 volumes:
   postgres:
-  graphql-types:

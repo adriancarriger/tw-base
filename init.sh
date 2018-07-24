@@ -8,6 +8,7 @@ if [[ $1 == "-f" ]]; then
   echo "Forcing a clean install…"
   rm -rf ../tw-data
   rm -rf ../tw-server
+  rm -rf ../tw-app
 fi
 
 if [[ ! -d ../tw-data ]]; then
@@ -16,4 +17,8 @@ fi
 
 if [[ ! -d ../tw-server ]]; then
   git clone --branch develop git@github.com:adriancarriger/tw-server.git ../tw-server
+fi
+
+if [[ ! -d ../tw-app ]]; then
+  git clone --branch develop git@github.com:adriancarriger/tw-app.git ../tw-app
 fi
