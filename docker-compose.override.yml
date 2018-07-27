@@ -1,5 +1,9 @@
 version: "3.5"
 services:
+  app:
+    volumes:
+      - ../tw-app:/app
+      - /app/node_modules
   server:
     volumes:
       - ../tw-server:/app
