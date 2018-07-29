@@ -15,9 +15,9 @@ A docker-compose base repo for running Twilio microservices locally
 
 ### Development
 
-- **Data** [http://localhost:4466/](http://localhost:4466/)
-- **Server** [http://localhost:4332/](http://localhost:4332/)
-- **App** [http://localhost:4333/](http://localhost:4333/)
+- **Data** [http://localhost:4466](http://localhost:4466)
+- **Server** [http://localhost:4332](http://localhost:4332)
+- **App** [http://localhost:4333](http://localhost:4333)
 
 ### Staging
 
